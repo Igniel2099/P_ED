@@ -65,4 +65,48 @@ public class Calculadora {
 
         return resultadoCalculo;
     }
+
+
+    /**
+     * Este método resuelve multiplicaciones y divisiones en una operación combinada.
+     * Primero, encuentra el primer signo de multiplicación o división en la lista de signos.
+     * Luego, usando el índice de este signo en la lista, localiza en la lista de
+     * números el primer operando en la misma posición de índice y el segundo operando en
+     * la siguiente posición (índice + 1). Realiza la operación correspondiente entre estos dos operandos (multiplicación o división),
+     * y luego elimina tanto el signo como los números involucrados de sus respectivas listas, reemplazándolos con el resultado obtenido.
+     * @param resultado Se pasa un parámetro de tipo Resultado que tiene los números y signos separados.
+     */
+    public Resultado calcularMultiplicacionYDivision(Resultado resultado) throws ExcepcionCalcular {
+        int i = 0;
+        while (i < resultado.operaciones.size()) {
+            Character signo = resultado.operaciones.get(i);
+            double total = 0.0;
+            if (signo.equals('*') || signo.equals('/')) {
+
+                Double primero = resultado.numeros.remove(i);
+                Double segundo = resultado.numeros.remove(i);
+
+                if (signo.equals('*')) {
+                    total = primero * segundo;
+
+                } else if (signo.equals('/')) {
+                    if (segundo == 0) {
+                        throw new ExcepcionCalcular("No se puede dividir por 0");
+                    }
+                    total = primero / segundo;
+                }
+                resultado.operaciones.remove(i);
+                resultado.numeros.add(i, total);
+
+            } else {
+                i++;
+            }
+        }
+
+        return resultado;
+    }
+    
 }
+
+
+
