@@ -105,6 +105,45 @@ public class Calculadora {
 
         return resultado;
     }
+
+    /**
+     * Hace lo mismo que el método anterior pero trata con exponentes y raíces cuadradas.
+     * @param resultado Se pasa un parámetro de tipo Resultado que tiene los números y signos separados.
+     * @return Devuelve un objeto de tipo Resultado ya que todavía hay más cálculos por hacer.
+     */
+    public Resultado calcularExponentesYRaizCuadrada(Resultado resultado) throws ExcepcionCalcular {
+        int i = 0;
+        while (i < resultado.operaciones.size()) {
+
+            Character signo = resultado.operaciones.get(i);
+            double total = 0.0;
+
+            if (signo.equals('^') || signo.equals('√')) {
+                if (signo.equals('^')) {
+
+                    Double base = resultado.numeros.remove(i);
+                    Double exponente = resultado.numeros.remove(i);
+
+                    total = Math.pow(base, exponente);
+
+                } else if (signo.equals('√')) {
+                    Double base = resultado.numeros.remove(i);
+                    if (base < 0) {
+                        throw new ExcepcionCalcular("No se pueden sacar raíces cuadradas de números negativos.");
+                    }
+
+                    total = Math.sqrt(base);
+                }
+
+                resultado.operaciones.remove(i);
+                resultado.numeros.add(i, total);
+            } else {
+                i++;
+            }
+        }
+        return resultado;
+    }
+
     
 }
 
